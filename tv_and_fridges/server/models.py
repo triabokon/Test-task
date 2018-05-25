@@ -20,7 +20,7 @@ class TV(db.Model):
             'id': self.id,
             'title': self.title,
             'cost': self.cost,
-            'screen_size': self.screen_size,
+            'size': self.screen_size,
             'clicks': self.clicks
         }
 
@@ -45,6 +45,6 @@ class Fridges(db.Model):
             'id': self.id,
             'title': self.title,
             'cost': self.cost,
-            'screen_size': self.capacity,
+            'size': self.capacity,
             'clicks': self.clicks
         }

@@ -1,7 +1,9 @@
-from server import create_app, db
+from server import create_app, db, create_db, fill_db
 from flask import render_template, jsonify
 
 app = create_app()
+
+from models import TV,Fridges
 
 @app.route("/")
 def index():
@@ -13,7 +15,7 @@ def tv_list():
     response_object = {
         'status': 'success',
         'data': {
-            'videos': [tv.to_json() for tv in TV.query.all()]
+            'tvs': [tv.to_json() for tv in TV.query.all()]
         }
     }
     return jsonify(response_object), 200
@@ -24,7 +26,7 @@ def fridge_list():
     response_object = {
         'status': 'success',
         'data': {
-            'videos': [fridge.to_json() for fridge in Fridges.query.all()]
+            'fridges': [fridge.to_json() for fridge in Fridges.query.all()]
         }
     }
     return jsonify(response_object), 200
