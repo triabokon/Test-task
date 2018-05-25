@@ -1,0 +1,22 @@
+{
+  "tv": [
+    {"title": "Samsung UE43MU6172","cost": 12305, "screen_size": 43},
+    {"title": "LG 32LJ500V","cost": 20837, "screen_size": 32},
+    {"title": "Philips 49PUS6412","cost": 45827, "screen_size": 55},
+    {"title": "Kivi 32FK30G White","cost": 10462, "screen_size": 43},
+    {"title": "Nomi 40FTS11","cost": 13582, "screen_size": 49},
+    {"title": "Sony KD-55A1","cost": 98538, "screen_size": 55},
+    {"title": "LG OLED55C7V","cost": 50275, "screen_size": 43},
+    {"title": "Akai UA32DF2110","cost": 4864, "screen_size": 40}
+  ],
+  "fridges": [
+    {"title": "ATLANT ХМ 4625-101","cost": 10305, "capacity": 215},
+    {"title": "ELECTRO-LINE BC 50A","cost": 5334, "capacity": 180},
+    {"title": "Liberton LRU 143-220KG","cost": 7385, "capacity": 200},
+    {"title": "Saturn ST-CF1960U","cost": 7395, "capacity": 160},
+    {"title": "Candy CCTOS 542XH","cost": 9625, "capacity": 170},
+    {"title": "Zanussi ZRG15805WA","cost": 16385, "capacity": 210},
+    {"title": "Hansa FM138.3","cost": 8346, "capacity": 130},
+    {"title": "Beko RDM 6127","cost": 5385, "capacity": 150}
+  ]
+}
