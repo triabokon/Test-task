@@ -9,9 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import DATABASE_URL
 
-project_dir = os.path.dirname(os.path.abspath(__file__))
-database_file = "sqlite:///{}".format(os.path.join(project_dir, "tv_and_fridge.db"))
-
 db = SQLAlchemy()
 import models
 

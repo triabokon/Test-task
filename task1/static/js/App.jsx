@@ -1,7 +1,7 @@
 import React from "react";
 import ItemList from './ItemList'
 import {Button, Grid, Jumbotron, Tabs, Tab} from "react-bootstrap";
-var $ = require ('jquery')
+var $ = require ('jquery');
 
 export default class App extends React.Component {
     constructor(props) {
@@ -9,7 +9,7 @@ export default class App extends React.Component {
         this.state = {
             tvs: [],
             fridges: []
-        }
+        };
 
         this.itemClicked = this.itemClicked.bind(this);
         this.resetClicks = this.resetClicks.bind(this);
@@ -53,7 +53,7 @@ export default class App extends React.Component {
                 console.log(data);
                 items.find((element)=>{return element.id === id}).clicks += 1;
                 if(path === 'tv')
-                    this.setState({tvs: items.sort((a,b)=>{return b.clicks - a.clicks})})
+                    this.setState({tvs: items.sort((a,b)=>{return b.clicks - a.clicks})});
                   else
                      this.setState({fridges: items.sort((a,b)=>{return b.clicks - a.clicks})})
               }.bind(this),
@@ -71,8 +71,8 @@ export default class App extends React.Component {
               method: 'POST',
               success: function(data) {
                     console.log(data);
-                    this.getFridges()
-                    this.getTVs()
+                    this.getFridges();
+                    this.getTVs();
               }.bind(this),
               error: function(xhr, status, error) {
                 console.log('An error ('+status+') occured:', error.toString());
@@ -81,8 +81,8 @@ export default class App extends React.Component {
     };
 
     componentDidMount(){
-        this.getTVs()
-        this.getFridges()
+        this.getTVs();
+        this.getFridges();
     }
 
     render () {
