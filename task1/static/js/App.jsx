@@ -1,15 +1,18 @@
 import React from "react";
 import ItemList from './ItemList'
-import {Grid, Jumbotron, Tabs, Tab} from "react-bootstrap";
+import {Button, Grid, Jumbotron, Tabs, Tab} from "react-bootstrap";
 var $ = require ('jquery')
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
-            tvs:[],
-            fridges:[]
+        this.state = {
+            tvs: [],
+            fridges: []
         }
+
+        this.itemClicked = this.itemClicked.bind(this);
+        this.resetClicks = this.resetClicks.bind(this);
     }
 
     getTVs(){
@@ -17,7 +20,8 @@ export default class App extends React.Component {
               url: 'http://127.0.0.1:5000/tv',
               dataType: 'json',
               success: function(data) {
-                this.setState({tvs: data.data.tvs}, console.log(this.state.items));
+                this.setState({tvs: data.data.tvs.sort((a,b)=>{return b.clicks - a.clicks})},
+                    console.log(this.state.items));
               }.bind(this),
               error: function(xhr, status, error) {
                 console.log('An error ('+status+') occured:', error.toString());
@@ -30,13 +34,51 @@ export default class App extends React.Component {
               url: 'http://127.0.0.1:5000/fridge',
               dataType: 'json',
               success: function(data) {
-                this.setState({fridges: data.data.fridges}, console.log(this.state.items));
+                this.setState({fridges: data.data.fridges.sort((a,b)=>{return b.clicks - a.clicks})}, console.log(this.state.items));
               }.bind(this),
               error: function(xhr, status, error) {
                 console.log('An error ('+status+') occured:', error.toString());
               }.bind(this)
             });
     }
+
+    itemClicked (id, path,items, e) {
+        e.preventDefault();
+        $.ajax({
+              url:  "http://127.0.0.1:5000/"+path,
+              dataType: 'json',
+              method: 'POST',
+              data: {id:id},
+              success: function(data) {
+                console.log(data);
+                items.find((element)=>{return element.id === id}).clicks += 1;
+                if(path === 'tv')
+                    this.setState({tvs: items.sort((a,b)=>{return b.clicks - a.clicks})})
+                  else
+                     this.setState({fridges: items.sort((a,b)=>{return b.clicks - a.clicks})})
+              }.bind(this),
+              error: function(xhr, status, error) {
+                console.log('An error ('+status+') occured:', error.toString());
+              }.bind(this)
+            });
+    };
+
+     resetClicks (e) {
+        e.preventDefault();
+        $.ajax({
+              url:  "http://127.0.0.1:5000/reset",
+              dataType: 'json',
+              method: 'POST',
+              success: function(data) {
+                    console.log(data);
+                    this.getFridges()
+                    this.getTVs()
+              }.bind(this),
+              error: function(xhr, status, error) {
+                console.log('An error ('+status+') occured:', error.toString());
+              }.bind(this)
+            });
+    };
 
     componentDidMount(){
         this.getTVs()
@@ -58,12 +100,16 @@ export default class App extends React.Component {
                 <Grid>
                     <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
                         <Tab eventKey={1} title={<h2>TV</h2>}>
-                        <ItemList items={this.state.tvs}/>
+                        <ItemList items={this.state.tvs} path={'tv'} event={this.itemClicked}/>
                       </Tab>
                       <Tab eventKey={2} title={<h2>Fridges</h2>}>
-                        <ItemList items={this.state.fridges}/>
+                        <ItemList items={this.state.fridges} path={'fridge'} event={this.itemClicked}/>
                       </Tab>
                     </Tabs>
+                    <br/>
+                    <Button bsStyle='primary' onClick={e => this.resetClicks(e)}>Reset clicks</Button>
+                    <br/>
+                    <hr/>
                 </Grid>
             </div>
         );
