@@ -6,7 +6,11 @@ var $ = require ('jquery');
 export default class App extends React.Component {
     constructor(props) {
         super(props);
+
+        let url = (window.location.href).split('/');
+
         this.state = {
+            location: url[2],
             tvs: [],
             fridges: []
         };
@@ -17,7 +21,7 @@ export default class App extends React.Component {
 
     getTVs(){
          $.ajax({
-              url: 'http://127.0.0.1:5000/tv',
+              url: "http://"+this.state.location+'/tv',
               dataType: 'json',
               success: function(data) {
                 this.setState({tvs: data.data.tvs.sort((a,b)=>{return b.clicks - a.clicks})},
@@ -31,7 +35,7 @@ export default class App extends React.Component {
 
     getFridges(){
          $.ajax({
-              url: 'http://127.0.0.1:5000/fridge',
+              url: "http://"+this.state.location+'/fridge',
               dataType: 'json',
               success: function(data) {
                 this.setState({fridges: data.data.fridges.sort((a,b)=>{return b.clicks - a.clicks})}, console.log(this.state.items));
@@ -45,7 +49,7 @@ export default class App extends React.Component {
     itemClicked (id, path,items, e) {
         e.preventDefault();
         $.ajax({
-              url:  "http://127.0.0.1:5000/"+path,
+              url:  "http://"+this.state.location+'/'+path,
               dataType: 'json',
               method: 'POST',
               data: {id:id},
@@ -66,7 +70,7 @@ export default class App extends React.Component {
      resetClicks (e) {
         e.preventDefault();
         $.ajax({
-              url:  "http://127.0.0.1:5000/reset",
+              url:  "http://"+this.state.location+"/reset",
               dataType: 'json',
               method: 'POST',
               success: function(data) {
