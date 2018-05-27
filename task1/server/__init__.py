@@ -14,7 +14,7 @@ import models
 
 
 def create_app():
-    app = Flask(__name__, static_folder="../static/dist", template_folder="../static")
+    app = Flask(__name__, static_folder="./static/dist", template_folder="./static")
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
