@@ -7,10 +7,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
 
-        let url = (window.location.href).split('/');
-
         this.state = {
-            location: url[2],
             tvs: [],
             fridges: []
         };
@@ -21,8 +18,9 @@ export default class App extends React.Component {
 
     getTVs(){
          $.ajax({
-              url: "http://"+this.state.location+'/tv',
+              url:  '/tv/',
               dataType: 'json',
+             crossDomain: true,
               success: function(data) {
                 this.setState({tvs: data.data.tvs.sort((a,b)=>{return b.clicks - a.clicks})},
                     console.log(this.state.items));
@@ -35,8 +33,9 @@ export default class App extends React.Component {
 
     getFridges(){
          $.ajax({
-              url: "http://"+this.state.location+'/fridge',
+              url:  '/fridge/',
               dataType: 'json',
+             crossDomain: true,
               success: function(data) {
                 this.setState({fridges: data.data.fridges.sort((a,b)=>{return b.clicks - a.clicks})}, console.log(this.state.items));
               }.bind(this),
@@ -49,8 +48,9 @@ export default class App extends React.Component {
     itemClicked (id, path,items, e) {
         e.preventDefault();
         $.ajax({
-              url:  "http://"+this.state.location+'/'+path,
+              url:   '/'+path+'/',
               dataType: 'json',
+            crossDomain: true,
               method: 'POST',
               data: {id:id},
               success: function(data) {
@@ -70,8 +70,9 @@ export default class App extends React.Component {
      resetClicks (e) {
         e.preventDefault();
         $.ajax({
-              url:  "http://"+this.state.location+"/reset",
+              url: "/reset/",
               dataType: 'json',
+            crossDomain: true,
               method: 'POST',
               success: function(data) {
                     console.log(data);

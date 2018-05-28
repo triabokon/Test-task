@@ -3,14 +3,14 @@ from flask import render_template, jsonify, request
 
 app = create_app()
 
-from models import TV,Fridges
+from server.models import TV,Fridges
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-@app.route("/tv", methods=["GET", "POST"])
+@app.route("/tv/", methods=["GET", "POST"])
 def tv_list():
     if request.method == "POST":
         resp = int(request.form['id'])
@@ -26,7 +26,7 @@ def tv_list():
     return jsonify(response_object), 200
 
 
-@app.route("/fridge", methods=["GET", "POST"])
+@app.route("/fridge/", methods=["GET", "POST"])
 def fridge_list():
     if request.method == "POST":
         resp = int(request.form['id'])
@@ -41,7 +41,7 @@ def fridge_list():
     }
     return jsonify(response_object), 200
 
-@app.route("/reset", methods=["POST"])
+@app.route("/reset/", methods=["POST"])
 def reset_db():
     drop_db()
     create_db()
@@ -56,4 +56,4 @@ def reset_db():
     return jsonify(response_object), 200
 
 if __name__ == "__main__":
-    app.run()
+    app.run(ssl_context='adhoc')

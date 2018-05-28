@@ -2,6 +2,7 @@ from server import db
 
 class TV(db.Model):
     __tablename__ = 'tv'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String())
@@ -27,6 +28,7 @@ class TV(db.Model):
 
 class Fridges(db.Model):
     __tablename__ = 'fridges'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String())

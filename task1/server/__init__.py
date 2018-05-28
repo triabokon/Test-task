@@ -3,18 +3,23 @@ import json
 
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 import psycopg2
+import urllib.request
 
 from flask_sqlalchemy import SQLAlchemy
+from flask_sslify import SSLify
 
-from config import DATABASE_URL
+from .config import DATABASE_URL
 
 db = SQLAlchemy()
-import models
+import server.models
 
 
 def create_app():
     app = Flask(__name__, static_folder="./static/dist", template_folder="./static")
+    CORS(app)
+    sslify = SSLify(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -27,8 +32,8 @@ def create_db():
     db.create_all()
 
 def fill_db():
-    with open('./data.json', 'r') as data:
-        json_data = json.load(data)
+    with urllib.request.urlopen('https://api.myjson.com/bins/8mmby') as response:
+        json_data = json.load(response)
         tvs = json_data.get('tv')
         fridges = json_data.get('fridges')
         for t in tvs:
