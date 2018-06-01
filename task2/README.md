@@ -20,5 +20,5 @@ $ ./simulate.py -n 10 --mirror
 
 ```
 #### Example
-![Output](https://drive.google.com/file/d/1N__ITzXohODLRSQl5jr-K9ixT9And5Hi/view?usp=sharing)
+![Output](http://res.cloudinary.com/tanyacloud/image/upload/v1527893006/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA_%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0_%D0%BE%D1%82_2018-06-02_01-33-23_g7rped.png)
 
