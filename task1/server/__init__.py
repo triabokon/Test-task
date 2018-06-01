@@ -8,7 +8,6 @@ import psycopg2
 import urllib.request
 
 from flask_sqlalchemy import SQLAlchemy
-from flask_sslify import SSLify
 
 from .config import DATABASE_URL
 
@@ -19,10 +18,8 @@ import server.models
 def create_app():
     app = Flask(__name__, static_folder="./static/dist", template_folder="./static")
     CORS(app)
-    sslify = SSLify(app)
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     db.init_app(app)
     if db is not None:
         print('Successfully connecting to database')
