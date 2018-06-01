@@ -1,4 +1,4 @@
-from server import create_app, db, create_db, fill_db, drop_db
+from server import create_app, db, fill_db, reset_tables
 from flask import render_template, jsonify, request
 
 app = create_app()
@@ -13,8 +13,9 @@ def index():
 @app.route("/tv/", methods=["GET", "POST"])
 def tv_list():
     if request.method == "POST":
-        resp = int(request.form['id'])
-        tv = TV.query.filter_by(id=resp).first()
+        resp = request.get_json()
+        resp_id = int(resp.get('id'))
+        tv = TV.query.filter_by(id=resp_id).first()
         tv.clicks += 1
         db.session.commit()
     response_object = {
@@ -29,8 +30,9 @@ def tv_list():
 @app.route("/fridge/", methods=["GET", "POST"])
 def fridge_list():
     if request.method == "POST":
-        resp = int(request.form['id'])
-        fridge = Fridges.query.filter_by(id=resp).first()
+        resp = request.get_json()
+        resp_id = int(resp.get('id'))
+        fridge = Fridges.query.filter_by(id=resp_id).first()
         fridge.clicks += 1
         db.session.commit()
     response_object = {
@@ -43,8 +45,7 @@ def fridge_list():
 
 @app.route("/reset/", methods=["POST"])
 def reset_db():
-    drop_db()
-    create_db()
+    reset_tables()
     fill_db()
     response_object = {
         'status': 'success',

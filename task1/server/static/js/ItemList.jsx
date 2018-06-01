@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid,ListGroup, ListGroupItem, Badge } from 'react-bootstrap';
-var $ = require ('jquery')
 
 const ItemList = (props) => {
 

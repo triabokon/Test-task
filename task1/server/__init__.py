@@ -44,5 +44,7 @@ def fill_db():
             db.session.add(item)
         db.session.commit()
 
-def drop_db():
-    db.drop_all()
+def reset_tables():
+    models.TV.query.delete()
+    models.Fridges.query.delete()
+    db.session.commit()

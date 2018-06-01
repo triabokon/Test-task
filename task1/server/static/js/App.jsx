@@ -1,7 +1,6 @@
 import React from "react";
 import ItemList from './ItemList'
 import {Button, Grid, Jumbotron, Tabs, Tab} from "react-bootstrap";
-var $ = require ('jquery');
 
 export default class App extends React.Component {
     constructor(props) {
@@ -17,72 +16,60 @@ export default class App extends React.Component {
     }
 
     getTVs(){
-         $.ajax({
-              url:  '/tv/',
-              dataType: 'json',
-             crossDomain: true,
-              success: function(data) {
+         fetch('/tv/')
+              .then(response => response.json())
+              .then(data => {
                 this.setState({tvs: data.data.tvs.sort((a,b)=>{return b.clicks - a.clicks})},
-                    console.log(this.state.items));
-              }.bind(this),
-              error: function(xhr, status, error) {
-                console.log('An error ('+status+') occured:', error.toString());
-              }.bind(this)
-            });
+                     console.log(this.state.items));
+              }).catch(error => {
+                  console.log(error)
+         });
     }
 
     getFridges(){
-         $.ajax({
-              url:  '/fridge/',
-              dataType: 'json',
-             crossDomain: true,
-              success: function(data) {
-                this.setState({fridges: data.data.fridges.sort((a,b)=>{return b.clicks - a.clicks})}, console.log(this.state.items));
-              }.bind(this),
-              error: function(xhr, status, error) {
-                console.log('An error ('+status+') occured:', error.toString());
-              }.bind(this)
-            });
+        fetch('/fridge/')
+              .then(response => response.json())
+              .then(data => {
+                this.setState({fridges: data.data.fridges.sort((a,b)=>{return b.clicks - a.clicks})},
+                    console.log(this.state.items));
+              }).catch(error => {
+                  console.log(error)
+         });
     }
 
     itemClicked (id, path,items, e) {
         e.preventDefault();
-        $.ajax({
-              url:   '/'+path+'/',
-              dataType: 'json',
-            crossDomain: true,
-              method: 'POST',
-              data: {id:id},
-              success: function(data) {
-                console.log(data);
+            fetch('/'+path+'/', {
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({id:id})
+            }).then(data => {
                 items.find((element)=>{return element.id === id}).clicks += 1;
                 if(path === 'tv')
                     this.setState({tvs: items.sort((a,b)=>{return b.clicks - a.clicks})});
                   else
                      this.setState({fridges: items.sort((a,b)=>{return b.clicks - a.clicks})})
-              }.bind(this),
-              error: function(xhr, status, error) {
-                console.log('An error ('+status+') occured:', error.toString());
-              }.bind(this)
-            });
+            }).catch(error => {
+                console.log(error)
+            })
     };
 
      resetClicks (e) {
         e.preventDefault();
-        $.ajax({
-              url: "/reset/",
-              dataType: 'json',
-            crossDomain: true,
-              method: 'POST',
-              success: function(data) {
-                    console.log(data);
+
+        fetch('/reset/', {
+              method: 'post',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }).then(data => {
                     this.getFridges();
                     this.getTVs();
-              }.bind(this),
-              error: function(xhr, status, error) {
-                console.log('An error ('+status+') occured:', error.toString());
-              }.bind(this)
-            });
+            }).catch(error => {
+                console.log(error)
+            })
     };
 
     componentDidMount(){
@@ -105,10 +92,10 @@ export default class App extends React.Component {
                 <Grid>
                     <Tabs defaultActiveKey={2} id="uncontrolled-tab-example">
                         <Tab eventKey={1} title={<h2>TV</h2>}>
-                        <ItemList items={this.state.tvs} path={'tv'} event={this.itemClicked}/>
+                        <ItemList items={this.state.tvs} path='tv' event={this.itemClicked}/>
                       </Tab>
                       <Tab eventKey={2} title={<h2>Fridges</h2>}>
-                        <ItemList items={this.state.fridges} path={'fridge'} event={this.itemClicked}/>
+                        <ItemList items={this.state.fridges} path='fridge' event={this.itemClicked}/>
                       </Tab>
                     </Tabs>
                     <br/>
